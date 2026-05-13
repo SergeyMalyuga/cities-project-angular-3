@@ -5,36 +5,17 @@
     <div class="tabs">
       <section class="locations container">
         <ul class="locations__list tabs__list">
-          <li class="locations__item">
-            <a class="locations__item-link tabs__item" href="#">
-              <span>Paris</span>
-            </a>
-          </li>
-          <li class="locations__item">
-            <a class="locations__item-link tabs__item" href="#">
-              <span>Cologne</span>
-            </a>
-          </li>
-          <li class="locations__item">
-            <a class="locations__item-link tabs__item" href="#">
-              <span>Brussels</span>
-            </a>
-          </li>
-          <li class="locations__item">
-            <a class="locations__item-link tabs__item tabs__item--active">
-              <span>Amsterdam</span>
-            </a>
-          </li>
-          <li class="locations__item">
-            <a class="locations__item-link tabs__item" href="#">
-              <span>Hamburg</span>
-            </a>
-          </li>
-          <li class="locations__item">
-            <a class="locations__item-link tabs__item" href="#">
-              <span>Dusseldorf</span>
-            </a>
-          </li>
+          @for (city of CITY_LOCATIONS; track city.name) {
+            <li class="locations__item">
+              <a class="locations__item-link tabs__item"
+                 [ngClass]="{'tabs__item--active': currentCity().name === city.name}"
+                 href="#"
+                 (click)="changeCity(city)"
+              >
+                <span>{{ city.name }}</span>
+              </a>
+            </li>
+          }
         </ul>
       </section>
     </div>
@@ -42,24 +23,10 @@
       <div class="cities__places-container container">
         <section class="cities__places places">
           <h2 class="visually-hidden">Places</h2>
-          <b class="places__found">312 places to stay in Amsterdam</b>
-          <form class="places__sorting" action="#" method="get">
-            <span class="places__sorting-caption">Sort by</span>
-            <span class="places__sorting-type" tabindex="0">
-                  Popular
-                  <svg class="places__sorting-arrow" width="7" height="4">
-                    <use xlink:href="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-            <ul class="places__options places__options--custom places__options--opened">
-              <li class="places__option places__option--active" tabindex="0">Popular</li>
-              <li class="places__option" tabindex="0">Price: low to high</li>
-              <li class="places__option" tabindex="0">Price: high to low</li>
-              <li class="places__option" tabindex="0">Top rated first</li>
-            </ul>
-          </form>
+          <b class="places__found">{{ offers().length }} places to stay in {{ currentCity().name }}</b>
+          <app-places-sorting-form (sortTypeSelected)="changeSortType($event)" [currentSortType]="sortType()"/>
           <div class="cities__places-list places__list tabs__content">
-            @for (offer of offers(); track offer.id) {
+            @for (offer of offers() | sortBy: sortType(); track offer.id) {
               <app-offer-card [offer]="offer"/>
             }
           </div>
