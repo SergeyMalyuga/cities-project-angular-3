@@ -13,3 +13,8 @@ export const selectOffersByCity = createSelector(
       .filter(offer => offer !== undefined)
       .filter(offer => offer.city.name === city.name)
 )
+
+export const selectCity = createSelector(
+  selectCityState,
+  city => city
+)
