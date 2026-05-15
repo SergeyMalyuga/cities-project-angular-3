@@ -7,12 +7,14 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {catchError, combineLatest, distinctUntilChanged, EMPTY, filter, map, merge, of, Subject, switchMap} from 'rxjs';
 import {Comment} from '../../core/models/comments';
 import {TitleCasePipe} from '@angular/common';
+import {CommentsComponent} from '../../components/comments/comments.component';
 
 @Component({
   selector: 'app-offer',
   imports: [
     HeaderComponent,
-    TitleCasePipe
+    TitleCasePipe,
+    CommentsComponent
   ],
   templateUrl: './offer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -65,6 +67,10 @@ export class OfferComponent implements OnInit {
         this.nearByOffers.set(result.nearbyOffers);
       }
     );
+  }
+
+  public refreshComments() {
+    this.refreshComments$.next();
   }
 
   protected readonly Math = Math;
