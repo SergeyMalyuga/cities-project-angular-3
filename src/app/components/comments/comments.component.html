@@ -1,7 +1,7 @@
 <section class="offer__reviews reviews">
-  <h2 class="reviews__title">Reviews &middot; <span class="reviews__amount">1</span></h2>
+  <h2 class="reviews__title">Reviews &middot; <span class="reviews__amount">{{comments.length}}</span></h2>
   <ul class="reviews__list">
-    @for (comment of comments; track comment.id) {
+    @for (comment of comments | sortCommentsByDate; track comment.id) {
       <li class="reviews__item">
         <div class="reviews__user user">
           <div class="reviews__avatar-wrapper user__avatar-wrapper">
@@ -29,5 +29,7 @@
       </li>
     }
   </ul>
-  <app-comment-form [offerId]="offerId" (postedComment)="onPostedComment()"/>
+  @if (authStatus() === AuthorizationStatus.AUTH) {
+    <app-comment-form [offerId]="offerId" (postedComment)="onPostedComment()"/>
+  }
 </section>
