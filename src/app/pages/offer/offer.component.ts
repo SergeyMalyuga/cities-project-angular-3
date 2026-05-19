@@ -6,15 +6,20 @@ import {Offer, OfferPreview} from '../../core/models/offers';
 import {ActivatedRoute, Router} from '@angular/router';
 import {catchError, combineLatest, distinctUntilChanged, EMPTY, filter, map, merge, of, Subject, switchMap} from 'rxjs';
 import {Comment} from '../../core/models/comments';
-import {TitleCasePipe} from '@angular/common';
+import {SlicePipe, TitleCasePipe} from '@angular/common';
 import {CommentsComponent} from '../../components/comments/comments.component';
+import {MapComponent} from '../../shared/components/map/map.component';
+import {OfferCardComponent} from '../../shared/components/offer-card/offer-card.component';
 
 @Component({
   selector: 'app-offer',
   imports: [
     HeaderComponent,
     TitleCasePipe,
-    CommentsComponent
+    CommentsComponent,
+    MapComponent,
+    SlicePipe,
+    OfferCardComponent
   ],
   templateUrl: './offer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -29,7 +34,7 @@ export class OfferComponent implements OnInit {
   public offer = signal<Offer | null>(null);
   public offerId = computed(() => this.offer()?.id ?? null);
   public comments = signal<Comment[]>([]);
-  public nearByOffers = signal<OfferPreview[]>([]);
+  public nearbyOffers = signal<OfferPreview[]>([]);
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.pipe(map(params => params.get('id')),
@@ -54,7 +59,7 @@ export class OfferComponent implements OnInit {
           )
         );
 
-        const nearbyOffers$ = this.offerService.getNearbyOffer(id).pipe(catchError(() => of([])));
+        const nearbyOffers$ = this.offerService.getNearbyOffers(id).pipe(catchError(() => of([])));
 
         return combineLatest({
           offer: offer$,
@@ -64,7 +69,7 @@ export class OfferComponent implements OnInit {
       })).pipe().subscribe(result => {
         this.offer.set(result.offer);
         this.comments.set(result.comments);
-        this.nearByOffers.set(result.nearbyOffers);
+        this.nearbyOffers.set(result.nearbyOffers);
       }
     );
   }
