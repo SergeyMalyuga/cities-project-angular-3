@@ -19,7 +19,7 @@ export class OfferService {
     return this.http.get<Offer>(`${BASE_URL}/${APIRoute.OFFERS}/${offerId}`).pipe(...defaultHttpPipes<Offer>());
   }
 
-  public getNearbyOffer(offerId: string): Observable<OfferPreview[]> {
+  public getNearbyOffers(offerId: string): Observable<OfferPreview[]> {
     return this.http.get<OfferPreview[]>(`${BASE_URL}/${APIRoute.OFFERS}/${offerId}/nearby`).pipe(...defaultHttpPipes<OfferPreview[]>());
   }
 }
