@@ -5,6 +5,7 @@ import * as UserActions from '../actions/user.actions';
 import {catchError, map, of, switchMap, tap} from 'rxjs';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AuthService} from '../../../core/services/auth.service';
+import {loadFavoriteOffers} from '../../favorite-offer/actions/favorite-offer.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +32,9 @@ export class UserEffects {
       }),
     ),
   );
+
+  public authSuccessLoadFavorites$ = createEffect(() => this.actions$.pipe(
+    ofType(UserActions.checkAuthStatusSuccess), map(() => loadFavoriteOffers())));
 
   public login$ = createEffect(() =>
     this.actions$.pipe(ofType(UserActions.login), switchMap(({credentials}) =>
