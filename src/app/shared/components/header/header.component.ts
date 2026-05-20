@@ -6,6 +6,10 @@ import {RouterLink} from '@angular/router';
 import {AppRoute, AuthorizationStatus} from '../../../core/constants/const';
 import {AccessibilityClickDirective} from '../../directives/accessibility-click.directive';
 import {logout} from '../../../store/user/actions/user.actions';
+import {
+  selectFavoriteOffersTotal,
+  selectIsFavoriteOffersLoading
+} from '../../../store/favorite-offer/selectors/favorite-offer.selectors';
 
 @Component({
   selector: 'app-header',
@@ -17,11 +21,14 @@ import {logout} from '../../../store/user/actions/user.actions';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
-  private store = inject(Store<AppState>);
-  public authStatus = this.store.selectSignal(selectAuthStatus);
-  public email = this.store.selectSignal(selectUserEmail);
   protected readonly AppRoute = AppRoute;
   protected readonly AuthorizationStatus = AuthorizationStatus;
+
+  private store = inject(Store<AppState>);
+
+  public authStatus = this.store.selectSignal(selectAuthStatus);
+  public email = this.store.selectSignal(selectUserEmail);
+  public totalFavoriteOffers = this.store.selectSignal(selectFavoriteOffersTotal);
 
   public signOut(): void {
     if (this.authStatus() === AuthorizationStatus.AUTH) {
