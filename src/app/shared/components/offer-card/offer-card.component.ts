@@ -26,6 +26,7 @@ import {selectIsFavoriteOffersLoading} from '../../../store/favorite-offer/selec
 export class OfferCardComponent {
   @Input({required: true}) offer!: OfferPreview;
   @Input() isOfferPage = false;
+  @Input() isFavoritePage = false;
   @Output() hovered = new EventEmitter<OfferPreview>();
 
   protected readonly AppRoute = AppRoute;
